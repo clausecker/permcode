@@ -1,0 +1,64 @@
+Various implementations of the permutation-encoding function
+described in this Stack Overflow question:
+
+    http://stackoverflow.com/q/39623081/417501
+
+Use the mk(1) utility to run the benchmarks. Set CC to your
+C compiler and CFLAGS to flags you want to test:
+
+    mk CC=... CFLAGS=...
+
+You might want to exclude bmi2 if your CPU is an older one.  You might
+want to exclude vector on 32 bit targets.  You should exclude treeasm
+and bmi2 on non x86 targets.  Here are the results for some machines:
+
+    AMD Turion(tm) II Neo N54L Dual-Core Processor (gcc 4.7.2)
+
+    baseline    0.1000s  0.1000s  0.2000s  10.0000ns  10.0000ns  20.0000ns
+    count       3.5800s  3.2300s  6.8100s 358.0000ns 323.0000ns 681.0000ns
+    bitcount    3.6100s  0.2400s  3.8500s 361.0000ns  24.0000ns 385.0000ns
+    decrement   6.9100s  3.7900s 10.7000s 691.0000ns 379.0000ns 1070.0000ns
+    bin4        4.6200s  3.6300s  8.2500s 462.0000ns 363.0000ns 825.0000ns
+    bin5        4.2600s  3.6700s  7.9300s 426.0000ns 367.0000ns 793.0000ns
+    bin8        4.8500s  3.6700s  8.5200s 485.0000ns 367.0000ns 852.0000ns
+    vector      0.9500s  0.7500s  1.7000s  95.0000ns  75.0000ns 170.0000ns
+    tree        3.4700s  2.8200s  6.2900s 347.0000ns 282.0000ns 629.0000ns
+    treeasm     2.1700s  1.4200s  3.5900s 217.0000ns 142.0000ns 359.0000ns
+
+
+    Intel(R) Core(TM) i7-4910MQ CPU @ 2.90GHz (clang 3.8.1)
+    baseline    0.0391s  0.0391s  0.0781s   3.9062ns   3.9062ns   7.8125ns
+    count       1.3750s  1.4297s  2.8047s 137.5000ns 142.9688ns 280.4688ns
+    bitcount    1.5547s  0.1172s  1.6719s 155.4688ns  11.7188ns 167.1875ns
+    decrement   2.3281s  1.4062s  3.7344s 232.8125ns 140.6250ns 373.4375ns
+    bin4        2.2422s  1.5547s  3.7969s 224.2188ns 155.4688ns 379.6875ns
+    bin5        2.0547s  1.6562s  3.7109s 205.4688ns 165.6250ns 371.0938ns
+    bin8        2.5859s  1.5625s  4.1484s 258.5938ns 156.2500ns 414.8438ns
+    vector      0.6328s  0.4297s  1.0625s  63.2812ns  42.9688ns 106.2500ns
+    tree        1.9766s  1.6641s  3.6406s 197.6562ns 166.4062ns 364.0625ns
+    treeasm     1.1406s  0.5938s  1.7344s 114.0625ns  59.3750ns 173.4375ns
+    bmi2        0.2344s  0.1250s  0.3594s  23.4375ns  12.5000ns  35.9375ns
+
+
+    Intel(R) Core(TM) i7-4910MQ CPU @ 2.90GHz (gcc 6.2.0)
+    baseline    0.0391s  0.0312s  0.0703s   3.9062ns   3.1250ns   7.0312ns
+    count       1.5312s  1.4453s  2.9766s 153.1250ns 144.5312ns 297.6562ns
+    bitcount    1.5078s  0.0703s  1.5781s 150.7812ns   7.0312ns 157.8125ns
+    decrement   2.1875s  1.7969s  3.9844s 218.7500ns 179.6875ns 398.4375ns
+    bin4        2.1562s  1.7734s  3.9297s 215.6250ns 177.3438ns 392.9688ns
+    bin5        2.0703s  1.8281s  3.8984s 207.0312ns 182.8125ns 389.8438ns
+    bin8        2.0547s  1.8672s  3.9219s 205.4688ns 186.7188ns 392.1875ns
+    vector      0.3594s  0.2891s  0.6484s  35.9375ns  28.9062ns  64.8438ns
+    tree        2.0781s  1.7734s  3.8516s 207.8125ns 177.3438ns 385.1562ns
+    treeasm     1.4297s  0.7422s  2.1719s 142.9688ns  74.2188ns 217.1875ns
+    bmi2        0.0938s  0.0703s  0.1641s   9.3750ns   7.0312ns  16.4062ns
+
+    RPi 1b BCM2708 (gcc 4.6.3)
+    baseline    0.8500s  0.8400s  1.6900s  85.0000ns  84.0000ns 169.0000ns
+    count      14.4900s  9.8000s 24.2900s 1449.0000ns 980.0000ns 2429.0000ns
+    bitcount   15.2800s  8.6400s 23.9200s 1528.0000ns 864.0000ns 2392.0000ns
+    decrement  25.3700s 16.9600s 42.3300s 2537.0000ns 1696.0000ns 4233.0000ns
+    bin4       23.3600s 17.2500s 40.6100s 2336.0000ns 1725.0000ns 4061.0000ns
+    bin5       22.1400s 17.1300s 39.2700s 2214.0000ns 1713.0000ns 3927.0000ns
+    bin8       22.7800s 16.6400s 39.4200s 2278.0000ns 1664.0000ns 3942.0000ns
+    tree        8.9500s  9.5300s 18.4800s 895.0000ns 953.0000ns 1848.0000ns
