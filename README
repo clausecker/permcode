@@ -22,6 +22,7 @@ and bmi2 on non x86 targets.  Here are the results for some machines:
     bin5        4.2600s  3.6700s  7.9300s 426.0000ns 367.0000ns 793.0000ns
     bin8        4.8500s  3.6700s  8.5200s 485.0000ns 367.0000ns 852.0000ns
     vector      0.9500s  0.7500s  1.7000s  95.0000ns  75.0000ns 170.0000ns
+    shuffle     0.4700s  0.7700s  1.2400s  47.0000ns  77.0000ns 124.0000ns
     tree        3.4700s  2.8200s  6.2900s 347.0000ns 282.0000ns 629.0000ns
     treeasm     2.1700s  1.4200s  3.5900s 217.0000ns 142.0000ns 359.0000ns
 
@@ -35,6 +36,7 @@ and bmi2 on non x86 targets.  Here are the results for some machines:
     bin5        2.0547s  1.6562s  3.7109s 205.4688ns 165.6250ns 371.0938ns
     bin8        2.5859s  1.5625s  4.1484s 258.5938ns 156.2500ns 414.8438ns
     vector      0.6328s  0.4297s  1.0625s  63.2812ns  42.9688ns 106.2500ns
+    shuffle     0.1328s  0.3438s  0.4766s  13.2812ns  34.3750ns  47.6562ns
     tree        1.9766s  1.6641s  3.6406s 197.6562ns 166.4062ns 364.0625ns
     treeasm     1.1406s  0.5938s  1.7344s 114.0625ns  59.3750ns 173.4375ns
     bmi2        0.2344s  0.1250s  0.3594s  23.4375ns  12.5000ns  35.9375ns
@@ -49,6 +51,7 @@ and bmi2 on non x86 targets.  Here are the results for some machines:
     bin5        2.0703s  1.8281s  3.8984s 207.0312ns 182.8125ns 389.8438ns
     bin8        2.0547s  1.8672s  3.9219s 205.4688ns 186.7188ns 392.1875ns
     vector      0.3594s  0.2891s  0.6484s  35.9375ns  28.9062ns  64.8438ns
+    shuffle     0.1953s  0.3672s  0.5625s  19.5312ns  36.7188ns  56.2500ns
     tree        2.0781s  1.7734s  3.8516s 207.8125ns 177.3438ns 385.1562ns
     treeasm     1.4297s  0.7422s  2.1719s 142.9688ns  74.2188ns 217.1875ns
     bmi2        0.0938s  0.0703s  0.1641s   9.3750ns   7.0312ns  16.4062ns
@@ -61,4 +64,16 @@ and bmi2 on non x86 targets.  Here are the results for some machines:
     bin4       23.3600s 17.2500s 40.6100s 2336.0000ns 1725.0000ns 4061.0000ns
     bin5       22.1400s 17.1300s 39.2700s 2214.0000ns 1713.0000ns 3927.0000ns
     bin8       22.7800s 16.6400s 39.4200s 2278.0000ns 1664.0000ns 3942.0000ns
+    shuffle     2.7500s  3.4000s  6.1500s 275.0000ns 340.0000ns 615.0000ns
     tree        8.9500s  9.5300s 18.4800s 895.0000ns 953.0000ns 1848.0000ns
+
+    RPi 1b BCM2708 (clang 3.0-6.2)
+    baseline    1.0500s  1.0500s  2.1000s 105.0000ns 105.0000ns 210.0000ns
+    count      14.0400s  9.1500s 23.1900s 1404.0000ns 915.0000ns 2319.0000ns
+    bitcount   12.4900s  4.8100s 17.3000s 1249.0000ns 481.0000ns 1730.0000ns
+    decrement  28.5200s 18.6600s 47.1800s 2852.0000ns 1866.0000ns 4718.0000ns
+    bin4       17.3200s 10.7600s 28.0800s 1732.0000ns 1076.0000ns 2808.0000ns
+    bin5       16.6900s 12.9600s 29.6500s 1669.0000ns 1296.0000ns 2965.0000ns
+    bin8       17.5400s 10.8500s 28.3900s 1754.0000ns 1085.0000ns 2839.0000ns
+    shuffle     4.4500s  4.7800s  9.2300s 445.0000ns 478.0000ns 923.0000ns
+    tree       10.0500s  9.0300s 19.0800s 1005.0000ns 903.0000ns 1908.0000ns
