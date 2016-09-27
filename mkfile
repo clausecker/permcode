@@ -1,4 +1,6 @@
-CFLAGS=-O3 -march=native -mtune=native
+CC=cc
+CFLAGS=-O3
+
 variants=baseline count bitcount decrement bin4 bin5 bin8 vector tree treeasm bmi2
 
 bench:V: $variants
