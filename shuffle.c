@@ -1,5 +1,4 @@
-#include <assert.h>
-#include <string.h>
+#include <stddef.h>
 #include "permcode.h"
 
 /* Fisher-Yates shuffle, note that this generates a different encoding! */
@@ -12,6 +11,7 @@ const char *algname = "shuffle";
  */
 extern void encode(unsigned char perm[PC_COUNT])
 {
+	size_t i, j;
 	unsigned char state[SQ_COUNT] = {
 	     0,  1,  2,  3,  4,
 	     5,  6,  7,  8,  9,
@@ -24,7 +24,7 @@ extern void encode(unsigned char perm[PC_COUNT])
 	    10, 11, 12, 13, 14,
 	    15, 16, 17, 18, 19,
 	    20, 21, 22, 23, 24
-	}, i, j;
+	};
 
 	for (i = 0; i < PC_COUNT; i++) {
 		/*
@@ -51,20 +51,18 @@ extern void encode(unsigned char perm[PC_COUNT])
 
 extern void decode(unsigned char perm[PC_COUNT])
 {
-	size_t i;
+	size_t i, j;
 	unsigned char state[SQ_COUNT] = {
 	     0,  1,  2,  3,  4,
 	     5,  6,  7,  8,  9,
 	    10, 11, 12, 13, 14,
 	    15, 16, 17, 18, 19,
 	    20, 21, 22, 23, 24
-	}, tmp;
+	};
 
 	for (i = 0; i < PC_COUNT; i++) {
-		tmp = state[i + perm[i]];
-		state[i + perm[i]] = state[i];
-		state[i] = tmp;
+		j = i + perm[i];
+		perm[i] = state[j];
+		state[j] = state[i];
 	}
-
-	memcpy(perm, state, PC_COUNT);
 }
