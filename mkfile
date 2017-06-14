@@ -1,7 +1,7 @@
 CC=cc
 CFLAGS=-O3
 
-variants=baseline count bitcount decrement vector shuffle tree treeasm mmx bmi2
+variants=baseline count bitcount decrement vector shuffle tree treeasm mmx sse1 bmi2
 
 bench:V: $variants
 	for i in $prereq
