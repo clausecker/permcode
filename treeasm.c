@@ -7,22 +7,21 @@ const char *algname = "treeasm";
 
 extern void encode(unsigned char perm[PC_COUNT])
 {
-	unsigned tree[32] = {
-		16,
-		8, 8,
-		4, 4, 4, 4,
-		2, 2, 2, 2,  2, 2, 2, 2,
-		1, 1, 1, 1,  1, 1, 1, 1,  1, 1, 1, 1,  1, 1, 1, 1
+	unsigned tree[16] = {
+		8,
+		4, 4,
+		2, 2, 2, 2,
+		1, 1, 1, 1,  1, 1, 1, 1
 	};
 
 	size_t i, j;
 	unsigned path, code, zero, scratch;
 
 	for (i = 0; i < PC_COUNT; i++) {
-		path = 32 | perm[i];
+		path = 16 | perm[i];
 		code = 0;
 
-		for (j = 0; j < 5; j++) {
+		for (j = 0; j < 4; j++) {
 			zero = 0;
 			asm(
 				"shr %[path]"
@@ -44,12 +43,11 @@ extern void encode(unsigned char perm[PC_COUNT])
 
 extern void decode(unsigned char perm[PC_COUNT])
 {
-	unsigned tree[32] = {
-		16,
-		8, 8,
-		4, 4, 4, 4,
-		2, 2, 2, 2,  2, 2, 2, 2,
-		1, 1, 1, 1,  1, 1, 1, 1,  1, 1, 1, 1,  1, 1, 1, 1
+	unsigned tree[16] = {
+		8,
+		4, 4,
+		2, 2, 2, 2,
+		1, 1, 1, 1,  1, 1, 1, 1
 	};
 
 	size_t i, j;
@@ -59,7 +57,7 @@ extern void decode(unsigned char perm[PC_COUNT])
 		path = 1;
 		code = perm[i];
 
-		for (j = 0; j < 5; j++) {
+		for (j = 0; j < 4; j++) {
 			zero = 0;
 			here = tree[path - 1];
 
@@ -78,6 +76,6 @@ extern void decode(unsigned char perm[PC_COUNT])
 			code -= zero;
 		}
 
-		perm[i] = path & 31;
+		perm[i] = path & 15;
 	}
 }
