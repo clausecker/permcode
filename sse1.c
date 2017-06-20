@@ -24,8 +24,8 @@ extern void decode(unsigned char perm[PC_COUNT])
 {
 	size_t i, j;
 	int count;
-	__m128 occupation = _mm_set_epi32(0, 0, 0xfedcba98u, 0x76543210u);
-	__m128 mask, idx, idx_compl, mask0 = _mm_set1_epi8(0xff);
+	__m128i occupation = _mm_set_epi32(0, 0, 0xfedcba98u, 0x76543210u);
+	__m128i mask, idx, idx_compl, mask0 = _mm_set1_epi8(0xff);
 
 	for (i = 0; i < PC_COUNT; i++) {
 		idx = _mm_cvtsi32_si128(4 * perm[i]);
@@ -35,6 +35,4 @@ extern void decode(unsigned char perm[PC_COUNT])
 		occupation = _mm_or_si128(_mm_and_si128(mask, occupation),
 		    _mm_andnot_si128(mask, _mm_srli_epi64(occupation, 4)));
 	}
-
-	_mm_empty();
 }
