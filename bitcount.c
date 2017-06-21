@@ -7,7 +7,7 @@ const char *algname = "bitcount";
 extern void encode(unsigned char perm[PC_COUNT])
 {
 	size_t i, j;
-	int count;
+	unsigned count;
 	unsigned occupation = (1 << PC_COUNT) - 1, map;
 
 	for (i = 0; i < PC_COUNT; i++) {
