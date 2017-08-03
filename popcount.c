@@ -1,7 +1,7 @@
 #include <string.h>
 #include "permcode.h"
 
-/* count places to the left with popcount */
+/* count places to the left with popcount, decode with ctz */
 const char *algname = "popcount";
 
 extern void encode(unsigned char perm[PC_COUNT])
@@ -21,14 +21,14 @@ extern void decode(unsigned char perm[PC_COUNT])
 {
 	size_t i, j;
 	int count;
-	unsigned occupation = (1 << SQ_COUNT) - 1;
+	unsigned occupation = (1 << SQ_COUNT) - 1, tail;
 
 	for (i = 0; i < PC_COUNT; i++) {
-		count = 0;
-		for (j = 0; count <= perm[i]; j++)
-			count += occupation >> j & 1;
+		tail = occupation;
+		for (j = 0; j < perm[i]; j++)
+			tail &= tail - 1;
 
-		occupation &= ~(1 << (j - 1));
-		perm[i] = j - 1;
+		perm[i] = __builtin_ctz(tail);
+		occupation &= tail - 1;
 	}
 }
