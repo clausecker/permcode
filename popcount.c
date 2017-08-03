@@ -1,22 +1,19 @@
 #include <string.h>
 #include "permcode.h"
 
-/* count places to the left with bits */
-const char *algname = "bitcount";
+/* count places to the left with popcount */
+const char *algname = "popcount";
 
 extern void encode(unsigned char perm[PC_COUNT])
 {
 	size_t i, j;
-	unsigned count;
-	unsigned occupation = (1 << SQ_COUNT) - 1, map;
+	int count;
+	unsigned occupation = (1 << SQ_COUNT) - 1;
 
 	for (i = 0; i < PC_COUNT; i++) {
-		count = occupation & (1 << perm[i]) - 1;
-		count = count - (count >> 1 & 0x55555555);
-		count = (count & 0x33333333) + (count >> 2 & 0x33333333);
-		count = count + (count >> 4) & 0x0f0f0f0fu;
+		count = __builtin_popcount(occupation & (1 << perm[i]) - 1);
 		occupation &= ~(1 << perm[i]);
-		perm[i] = (count * 0x01010101u & 0xffffffffu) >> 24;
+		perm[i] = count;
 	}
 }
 
@@ -24,7 +21,7 @@ extern void decode(unsigned char perm[PC_COUNT])
 {
 	size_t i, j;
 	int count;
-	unsigned occupation = (1 << SQ_COUNT) -1;
+	unsigned occupation = (1 << SQ_COUNT) - 1;
 
 	for (i = 0; i < PC_COUNT; i++) {
 		count = 0;
