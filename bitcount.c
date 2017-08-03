@@ -1,7 +1,7 @@
 #include <string.h>
 #include "permcode.h"
 
-/* count places to the left with bits */
+/* count places to the left with bit fiddling */
 const char *algname = "bitcount";
 
 extern void encode(unsigned char perm[PC_COUNT])
@@ -22,16 +22,52 @@ extern void encode(unsigned char perm[PC_COUNT])
 
 extern void decode(unsigned char perm[PC_COUNT])
 {
-	size_t i, j;
+	size_t i;
 	int count;
-	unsigned occupation = (1 << SQ_COUNT) -1;
+	unsigned occupation = (1 << SQ_COUNT) - 1;
+	unsigned a, b, c, r, s, t;
 
 	for (i = 0; i < PC_COUNT; i++) {
-		count = 0;
-		for (j = 0; count <= perm[i]; j++)
-			count += occupation >> j & 1;
+		a = occupation - (occupation >> 1 & 0x55555555);
+		b = (a & 0x33333333) + (a >> 2 & 0x33333333);
+		c = b + (b >> 4) & 0x0f0f0f0f;
 
-		occupation &= ~(1 << (j - 1));
-		perm[i] = j - 1;
+		r = perm[i] + 1;
+		s = 0;
+		t = c + (c >> 8) & 0xff;
+
+		if (r > t) {
+			s += 16;
+			r -= t;
+		}
+
+		t = c >> s & 0xf;
+
+		if (r > t) {
+			s += 8;
+			r -= t;
+		}
+
+		t = b >> s & 0x7;
+
+		if (r > t) {
+			s += 4;
+			r -= t;
+		}
+
+		t = a >> s & 0x3;
+
+		if (r > t) {
+			s += 2;
+			r -= t;
+		}
+
+		t = occupation >> s & 0x1;
+
+		if (r > t)
+			s++;
+
+		perm[i] = s;
+		occupation &= ~(1 << s);
 	}
 }
