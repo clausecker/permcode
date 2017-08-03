@@ -8,7 +8,7 @@ extern void encode(unsigned char perm[PC_COUNT])
 {
 	size_t i, j;
 	int count;
-	unsigned occupation = (1 << PC_COUNT) - 1, map;
+	unsigned occupation = (1 << SQ_COUNT) - 1, map;
 
 	static const unsigned char lut[256] = {
 		0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4,
@@ -41,9 +41,9 @@ extern void decode(unsigned char perm[PC_COUNT])
 {
 	size_t i, j;
 	int count;
-	unsigned occupation = -1;
+	unsigned occupation = (1 << SQ_COUNT) - 1, map;
 
-	for (i = 0; i < PC_COUNT; i++) {
+	for (i = 0; i < SQ_COUNT; i++) {
 		count = 0;
 		for (j = 0; count <= perm[i]; j++)
 			count += occupation >> j & 1;

@@ -8,7 +8,7 @@ extern void encode(unsigned char perm[PC_COUNT])
 {
 	size_t i, j;
 	int count;
-	unsigned occupation = (1 << PC_COUNT) - 1;
+	unsigned occupation = (1 << SQ_COUNT) - 1;
 
 	for (i = 0; i < PC_COUNT; i++) {
 		count = __builtin_popcount(occupation & (1 << perm[i]) - 1);
@@ -21,7 +21,7 @@ extern void decode(unsigned char perm[PC_COUNT])
 {
 	size_t i, j;
 	int count;
-	unsigned occupation = (1 << PC_COUNT) - 1;
+	unsigned occupation = (1 << SQ_COUNT) - 1;
 
 	for (i = 0; i < PC_COUNT; i++) {
 		count = 0;
